@@ -351,13 +351,186 @@
     h2 { font-size: 1.3rem; }
     .icon { width: 46px; height: 46px; }
   }
+  /* ---------- Secret: compass button ---------- */
+  .compass-btn {
+    display: block;
+    margin: 0 auto .4rem;
+    background: none; border: 0; padding: 0;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .compass-btn:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 4px; }
+  .compass-btn .compass { margin: 0; display: block; }
+  .compass-btn.nudge .compass { animation: nudge .35s ease; }
+  @keyframes nudge {
+    0% { transform: rotate(0); }
+    30% { transform: rotate(var(--nudge, 25deg)); }
+    100% { transform: rotate(0); }
+  }
+  .compass-btn.spin .compass { animation: spinWild 1.6s cubic-bezier(.2,.8,.3,1); }
+  @keyframes spinWild {
+    0%   { transform: rotate(0) scale(1); filter: drop-shadow(0 6px 14px rgba(0,0,0,.7)); }
+    40%  { transform: rotate(1080deg) scale(1.15); filter: drop-shadow(0 0 24px rgba(243,207,114,.9)); }
+    100% { transform: rotate(1800deg) scale(1); filter: drop-shadow(0 6px 14px rgba(0,0,0,.7)); }
+  }
+
+  /* ---------- Secret: riddle scroll ---------- */
+  .scroll-overlay {
+    position: fixed; inset: 0;
+    z-index: 50;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    background: rgba(8,10,12,.78);
+    backdrop-filter: blur(3px);
+    opacity: 0; visibility: hidden;
+    transition: opacity .4s ease, visibility .4s;
+  }
+  .scroll-overlay.open { opacity: 1; visibility: visible; }
+
+  .scroll {
+    position: relative;
+    width: min(560px, 100%);
+    max-height: calc(100vh - 3rem);
+    display: flex; flex-direction: column;
+  }
+  .rod {
+    position: relative;
+    height: 26px;
+    margin: 0 -18px;
+    border-radius: 13px;
+    background: linear-gradient(180deg, #a5743a, #6b4420 55%, #3e2610);
+    box-shadow: 0 6px 12px rgba(0,0,0,.55);
+    z-index: 2;
+    flex: none;
+  }
+  .rod::before, .rod::after {
+    content: "";
+    position: absolute; top: -5px;
+    width: 22px; height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, var(--gold-bright), var(--gold-dark) 70%);
+    box-shadow: 0 3px 6px rgba(0,0,0,.5);
+  }
+  .rod::before { left: -10px; }
+  .rod::after { right: -10px; }
+
+  .scroll-paper {
+    position: relative;
+    overflow: auto;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255,250,230,.6), transparent 60%),
+      radial-gradient(ellipse at 75% 85%, rgba(150,110,50,.3), transparent 55%),
+      linear-gradient(135deg, var(--parchment), var(--parchment-2));
+    box-shadow: inset 0 0 50px rgba(120,80,30,.45);
+    padding: 0 2.2rem;
+    max-height: 0;
+    transition: max-height 1.1s cubic-bezier(.6,0,.2,1), padding 1.1s cubic-bezier(.6,0,.2,1);
+  }
+  .scroll-overlay.open .scroll-paper {
+    max-height: calc(100vh - 3rem - 52px);
+    padding: 2rem 2.2rem;
+  }
+  .scroll-paper h3 {
+    font-family: "Cinzel", serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: .12em;
+    text-align: center;
+    color: var(--ink);
+  }
+  .scroll-intro {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    margin: .8rem 0 1.4rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(138,100,32,.4);
+  }
+  .riddles { list-style: none; display: grid; gap: 1.3rem; counter-reset: r; }
+  .riddles li {
+    counter-increment: r;
+    position: relative;
+    padding-left: 2.6rem;
+    font-size: 1.15rem;
+    line-height: 1.5;
+  }
+  .riddles li::before {
+    content: counter(r, upper-roman);
+    position: absolute; left: 0; top: .1rem;
+    width: 1.9rem; height: 1.9rem;
+    display: grid; place-items: center;
+    font-family: "Cinzel", serif;
+    font-weight: 700;
+    font-size: .85rem;
+    color: #f4d3a0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #c44a3a, #7a1c14 70%);
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,.4);
+  }
+  .scroll-sign {
+    text-align: right;
+    font-style: italic;
+    margin-top: 1.6rem;
+    color: var(--ink-soft);
+  }
+  .scroll-close {
+    display: block;
+    margin: 1.4rem auto 0;
+    font-family: "Cinzel", serif;
+    font-size: .8rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: rgba(255,250,230,.4);
+    border: 1px solid rgba(90,67,48,.5);
+    border-radius: 3px;
+    padding: .5rem 1.2rem;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .scroll-close:hover { background: var(--gold); border-color: var(--gold-dark); }
+
+  /* ---------- Secret: invisible ink ---------- */
+  .ink-hint {
+    margin-top: 1.4rem;
+    font-style: italic;
+    font-size: 1rem;
+    color: #a88a5c !important;
+    opacity: .75;
+  }
+  .invisible-ink {
+    margin-top: .3rem !important;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: transparent !important;
+    text-shadow: none;
+    cursor: text;
+  }
+  .invisible-ink::selection { color: #6b2a10; background: rgba(214,168,74,.55); }
+
   @media (prefers-reduced-motion: reduce) {
     .compass { animation: none; }
+    .compass-btn.spin .compass, .compass-btn.nudge .compass { animation: none; }
+    .scroll-paper { transition: none; }
     html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
+
+<!--
+
+           N
+           |
+      W ---+--- E
+           |
+           S
+
+   Aren't you a curious one?
+
+-->
 
 <div class="wrap">
 
@@ -368,6 +541,7 @@
 
     <div class="hero">
       <!-- Compass rose -->
+      <button class="compass-btn" id="compass" type="button" aria-label="Compass">
       <svg class="compass" viewBox="0 0 100 100" aria-hidden="true">
         <defs>
           <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
@@ -394,6 +568,7 @@
         <polygon points="8,50 50,43 50,50" fill="#8a6420"/>
         <circle cx="50" cy="50" r="4" fill="#fff1c4" stroke="#8a6420"/>
       </svg>
+      </button>
 
       <h1>Wayfinders</h1>
       <p class="tagline">A fellowship of scholars, druids, diggers and wanderers seeking lost knowledge across Azeroth and beyond!</p>
@@ -424,6 +599,8 @@
         <span class="pill">Dungeons</span>
         <span class="pill">Raiding (soon)</span>
       </div>
+      <p class="ink-hint">Some words reveal themselves to those who look closely.</p>
+      <p class="invisible-ink">The compass knows more than it shows. Ask it five times.</p>
     </section>
 
     <section class="card" id="rules">
@@ -498,6 +675,89 @@
   </footer>
 
 </div>
+
+<!-- The riddle scroll, revealed by the compass -->
+<div class="scroll-overlay" id="scroll" role="dialog" aria-modal="true" aria-labelledby="scroll-title" aria-hidden="true">
+  <div class="scroll">
+    <div class="rod" aria-hidden="true"></div>
+    <div class="scroll-paper">
+      <h3 id="scroll-title">The Seeker's Trial</h3>
+      <p class="scroll-intro">
+        Three answers sealed and sent to the GM alone,<br>
+        will earn you a rank few have known.
+      </p>
+      <ol class="riddles">
+        <li>Romance once budded here,<br>
+            same place we lost many near and dear.<br>
+            Serves a vintage so rare that few ever pour,<br>
+            except behind the High King's door.</li>
+        <li>Glory be his name,<br>
+            Brow of steel and Light aflame.<br>
+            Once had a brother, turned to twilight,<br>
+            we amongst the Legion had to fight.</li>
+        <li>Axe bloodied with youth,<br>
+            for nothing this monster could soothe.<br>
+            Track him down we must,<br>
+            should no one else fall to his lust.</li>
+      </ol>
+      <p class="scroll-sign">— Aedara Willow, Royal Nuisance</p>
+      <button class="scroll-close" id="scroll-close" type="button">Roll up the scroll</button>
+    </div>
+    <div class="rod" aria-hidden="true"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var compass = document.getElementById('compass');
+  var overlay = document.getElementById('scroll');
+  var closeBtn = document.getElementById('scroll-close');
+  var clicks = 0, timer = null, busy = false;
+
+  compass.addEventListener('click', function () {
+    if (busy) return;
+    clicks++;
+    clearTimeout(timer);
+    // Clicks must come within 2 seconds of each other
+    timer = setTimeout(function () { clicks = 0; }, 2000);
+
+    if (clicks < 5) {
+      compass.style.setProperty('--nudge', (clicks % 2 ? 1 : -1) * (15 + clicks * 10) + 'deg');
+      compass.classList.remove('nudge');
+      void compass.offsetWidth;
+      compass.classList.add('nudge');
+      return;
+    }
+
+    clicks = 0;
+    busy = true;
+    compass.classList.remove('nudge');
+    compass.classList.add('spin');
+    setTimeout(function () {
+      compass.classList.remove('spin');
+      openScroll();
+      busy = false;
+    }, 1500);
+  });
+
+  function openScroll() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { closeBtn.focus({ preventScroll: true }); }, 600);
+  }
+  function closeScroll() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    compass.focus({ preventScroll: true });
+  }
+
+  closeBtn.addEventListener('click', closeScroll);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) closeScroll(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeScroll();
+  });
+})();
+</script>
 
 </body>
 </html>
